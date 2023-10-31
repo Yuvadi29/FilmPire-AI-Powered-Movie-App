@@ -41,7 +41,7 @@ const Navbar = () => {
                             </Button>
                         ) : (
                             <Button color='inherit' component={Link} to={`/profile/:id`} className={classes.linkButton} onClick={() => { }}>
-                                {!isMobile && <>My Movies &nbsp; </>}
+                                {!isMobile && <>My Movies</>}
                                 <Avatar
                                     style={{ width: 30, height: 30 }}
                                     alt='Profile'
@@ -57,7 +57,7 @@ const Navbar = () => {
             <div>
                 <nav className={classes.drawer}>
                     {isMobile ? (
-                        <Drawer
+                        <Drawer 
                             variant="temporary"
                             anchor="right"
                             open={mobileOpen}
@@ -68,7 +68,7 @@ const Navbar = () => {
                             <Sidebar setMobileOpen={setMobileOpen} />
                         </Drawer>
                     ) : (
-                        <Drawer classes={{ paper: classes.drawerPaper }} variant="permenant" open>
+                        <Drawer classes={{ paper: classes.drawerPaper }} variant="permanent" open>
                             <Sidebar setMobileOpen={setMobileOpen} />
                         </Drawer>
                     )}
