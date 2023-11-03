@@ -14,12 +14,22 @@ export const tmdbAPI = createApi({
         //Get Genres
         getGenres: builder.query({
             query: () => `genre/movie/list?api_key=6187eefe4e7289d3efa98940cc920de6`,
-        }), 
+        }),
 
         //Get Movies by [Type]
         getMovies: builder.query({
-            // query: () => `movie/popular?page=${page}&api_key=${api_key}`,
-            query: () => `movie/popular?page=${page}&api_key=6187eefe4e7289d3efa98940cc920de6`,
+            query: ({ genreIdOrCategoryName, page }) => {
+                // Get movies by Category 
+                if (genreIdOrCategoryName && typeof genreIdOrCategoryName === 'string') {
+                    return `movie/${genreIdOrCategoryName}?page=${page}&api_key=6187eefe4e7289d3efa98940cc920de6`
+                }
+                // Get movies by Genre
+                if (genreIdOrCategoryName && typeof genreIdOrCategoryName === 'number') {
+                    return `discover/movie?with_genres=${genreIdOrCategoryName}&page=${page}&api_key=6187eefe4e7289d3efa98940cc920de6`
+                }
+                // Get Popular Movies
+                return `movie/popular?page=${page}&api_key=6187eefe4e7289d3efa98940cc920de6`;
+            }
         }),
     }),
 });
