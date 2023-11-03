@@ -3,6 +3,7 @@ import { Box, CircularProgress, Divider, List, ListItem, ListItemIcon, ListItemT
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom/cjs/react-router-dom';
 import useStyles from './styles';
+import { useGetGenresQuery } from '../../services/TMDB';
 
 
 const redLogo = 'https://fontmeme.com/permalink/210930/8531c658a743debe1e1aa1a2fc82006e.png';
@@ -26,6 +27,10 @@ const demoCategories = [
 const Sidebar = ({ setMobileOpen }) => {
     const theme = useTheme();
     const classes = useStyles();
+    const { data, isFetching } = useGetGenresQuery();
+
+    console.log(data);
+
 
     return (
         <>
@@ -55,13 +60,18 @@ const Sidebar = ({ setMobileOpen }) => {
 
             <List>
                 <ListSubheader>Genres</ListSubheader>
-                {demoCategories.map(({ label, value }) => (
-                    <Link key={value} className={classes.links} to="/">
+                {isFetching ? (
+                    <Box display="flex" justifyContent="center">
+                        <CircularProgress />
+                    </Box>
+
+                ) : data.genres.map(({ name, id }) => (
+                    <Link key={name} className={classes.links} to="/">
                         <ListItem onClick={() => { }} button >
                             {/* <ListItemIcon>
                                 <img src={redLogo} alt="RedLogo" className={classes.genreImages} height={30} />
                             </ListItemIcon> */}
-                            <ListItemText primary={label} />
+                            <ListItemText primary={name} />
                         </ListItem>
                     </Link>
                 ))}
