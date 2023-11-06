@@ -6,14 +6,46 @@ import useStyles from './styles';
 import { useTheme } from '@mui/material';
 import Sidebar from '../Sidebar/Sidebar';
 import Search from '../Search/Search';
+import { fetchToken, createSessionId, moviesApi } from '../../utils';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUser, userSelector } from '../../Features/auth';
 
 const Navbar = () => {
 
+    const { isAuthenticated, user } = useSelector(userSelector);
     const [mobileOpen, setMobileOpen] = useState(false);
     const classes = useStyles();
     const theme = useTheme();
     const isMobile = useMediaQuery('(max-width: 600px)');
-    const isAuthenticated = true;
+    const token = localStorage.getItem('request_token');
+    const sessionIdFromLocalStorage = localStorage.getItem('sessionId');
+    const dispatch = useDispatch();
+
+    console.log(user);
+
+
+    useEffect(() => {
+        const logInUser = async () => {
+            if (token) {
+                if (sessionIdFromLocalStorage) {
+                    const { data: userData } = await moviesApi.get(`/account?session_id=${sessionIdFromLocalStorage}`);
+
+                    dispatch(setUser(userData));
+
+                } else {
+                    const sessionId = await createSessionId();
+
+                    const { data: userData } = await moviesApi.get(`/account?session_id=${sessionId}`);
+
+                    dispatch(setUser(userData));
+
+                }
+            }
+        };
+
+        logInUser();
+    }, [token]);
 
     return (
         <>
@@ -37,12 +69,18 @@ const Navbar = () => {
 
                     <div>
                         {!isAuthenticated ? (
-                            <Button color='inherit' onClick={() => { }}>
+                            <Button color='inherit' onClick={fetchToken}>
                                 Login &nbsp; <AccountCircle />
                             </Button>
                         ) : (
-                            <Button color='inherit' component={Link} to={`/profile/:id`} className={classes.linkButton} onClick={() => { }}>
-                                {!isMobile && <>My Movies</>}
+                            <Button
+                                color='inherit'
+                                component={Link}
+                                to={`/profile/${user.id}`}
+                                className={classes.linkButton}
+                                onClick={() => { }}
+                            >
+                                {!isMobile && <>My Movies &nbsp;</>}
                                 <Avatar
                                     style={{ width: 30, height: 30 }}
                                     alt='Profile'
