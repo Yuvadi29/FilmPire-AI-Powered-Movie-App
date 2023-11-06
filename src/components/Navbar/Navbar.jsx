@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import useStyles from './styles';
 import { useTheme } from '@mui/material';
 import Sidebar from '../Sidebar/Sidebar';
+import Search from '../Search/Search';
 
 const Navbar = () => {
 
@@ -32,7 +33,7 @@ const Navbar = () => {
                     <IconButton color='inherit' sx={{ ml: 1 }} onClick={() => { }}>
                         {theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
                     </IconButton>
-                    {!isMobile && 'Search...'}
+                    {!isMobile && <Search />}
 
                     <div>
                         {!isAuthenticated ? (
@@ -57,7 +58,7 @@ const Navbar = () => {
             <div>
                 <nav className={classes.drawer}>
                     {isMobile ? (
-                        <Drawer 
+                        <Drawer
                             variant="temporary"
                             anchor="right"
                             open={mobileOpen}
