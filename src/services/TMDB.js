@@ -36,10 +36,16 @@ export const tmdbAPI = createApi({
                 return `movie/popular?page=${page}&api_key=6187eefe4e7289d3efa98940cc920de6`;
             }
         }),
+
+        // Get Movie 
+        getMovie: builder.query({
+            query: (id) => `/movie/${id}?append_to_response=videos,credits&api_key=6187eefe4e7289d3efa98940cc920de6`
+        })
     }),
 });
 
 export const {
     useGetMoviesQuery,
     useGetGenresQuery,
+    useGetMovieQuery,
 } = tmdbAPI;
