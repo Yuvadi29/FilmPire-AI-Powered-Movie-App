@@ -1,6 +1,6 @@
 import { Box, Button, ButtonGroup, CircularProgress, Grid, Modal, Rating, Typography, formGroupClasses, useMediaQuery } from '@mui/material';
 import React from 'react';
-import { Movie as MovieIcon, Theatres, Language, PlusOne, Favorite, FavoriteBorderOutline, Remove, ArrowBack } from '@mui/icons-material';
+import { Movie as MovieIcon, Theatres, Language, PlusOne, Favorite, FavoriteBorderOutline, Remove, ArrowBack, Theaters, FavoriteBorderOutlined } from '@mui/icons-material';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import { useParams } from 'react-router-dom/cjs/react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,6 +16,9 @@ const MovieInformation = () => {
   const { data, isFetching, error } = useGetMovieQuery(id);
   const dispatch = useDispatch();
 
+  const isMovieFavorited = false;
+  const isMovieWatchListed = false;
+
 
   if (isFetching) {
     return (
@@ -24,6 +27,14 @@ const MovieInformation = () => {
       </Box>
     )
   }
+
+  const addToFavorites = () => {
+
+  };
+
+  const addToWatchList = () => {
+
+  };
 
   return (
     <Grid container className={classes.containerSpaceAround}>
@@ -49,7 +60,7 @@ const MovieInformation = () => {
           <Typography variant='h6' align='center' gutterBottom>{data?.runtime} minutes / {data?.spoken_languages.length > 0 ? `${data?.spoken_languages[0].name}` : ''}</Typography>
         </Grid>
         <Grid item className={classes.genresContainer}>
-          {data?.genres?.map((genre, index) => (
+          {data?.genres?.map((genre) => (
             <Link key={genre.name} className={classes.links} to="/" onClick={() => dispatch(selectGenreOrCategory(genre.id))}>
               <img
                 src={genreIcons[genre.name.toLowerCase()]}
@@ -58,6 +69,52 @@ const MovieInformation = () => {
               <Typography color="textPrimary" variant='subtitle1'>{genre?.name}</Typography>
             </Link>
           ))}
+        </Grid>
+        <Typography variant='h5' gutterBottom style={{ marginTop: '10px' }}>
+          Overview
+        </Typography>
+        <Typography style={{ marginBottom: '2rem' }}>
+          {data?.overview}
+        </Typography>
+        <Typography variant='h5' gutterBottom>
+          Top-Cast
+        </Typography>
+        <Grid item container spacing={2}>
+          {data && data.credits.cast.map((character, i) => (
+            character.profile_path && (
+              <Grid key={i} item xs={4} md={2} component={Link} to={`/actors/${character.id}`} style={{ textDecoration: 'none' }}>
+                <img className={classes.castImage} src={`https://image.tmdb.org/t/p/w500/${character.profile_path}`} alt={character.name} />
+                <Typography color="textPrimary">{character?.name}</Typography>
+                <Typography color="textSecondary">{character.character.split('/')[0]}</Typography>
+              </Grid>
+            )
+          )).slice(0, 6)}
+        </Grid>
+        <Grid item container style={{ marginTop: '2rem' }}>
+          <div className={classes.buttonsContainer}>
+            <Grid item xs={12} sm={6} className={classes.buttonsContainer}>
+              <ButtonGroup size='small' variant='outlined'>
+                <Button target='_blank' rel='noopener noreferrer' href={data?.homepage} endIcon={<Language />}>
+                  WEBSITE
+                </Button>
+                <Button target='_blank' rel='noopener noreferrer' href={`https://www.imdb.com/title/${data?.imdb_id}`} endIcon={<MovieIcon />}>
+                  IMDB
+                </Button>
+                <Button onClick={() => { }} href='#' endIcon={<Theaters />}>Trailer</Button>
+              </ButtonGroup>
+            </Grid>
+            <Grid item xs={12} sm={6} className={classes.buttonsContainer}>
+              <ButtonGroup size='medium' variant='outlined'>
+                <Button onClick={addToFavorites} endIcon={isMovieFavorited ? <FavoriteBorderOutlined /> : <Favorite />}>{isMovieFavorited ? 'Unfavorite' : 'Favorite'}</Button>
+                <Button onClick={addToWatchList} endIcon={isMovieWatchListed ? <Remove /> : <PlusOne />}>{isMovieWatchListed ? 'Remove From WatchList' : 'WatchList'}</Button>
+                <Button endIcon={<ArrowBack />} sx={{ borderColor: 'primary.main' }}>
+                  <Typography style={{ textDecoration: 'none' }} component={Link} to="/" color="inherit" variant='subtitle2'>
+                    Back
+                  </Typography>
+                </Button>
+              </ButtonGroup>
+            </Grid>
+          </div>
         </Grid>
       </Grid>
     </Grid>
