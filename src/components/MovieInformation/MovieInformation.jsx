@@ -5,10 +5,11 @@ import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import { useParams } from 'react-router-dom/cjs/react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { useGetMovieQuery } from '../../services/TMDB';
+import { useGetMovieQuery, useGetRecommendationsQuery } from '../../services/TMDB';
 import useStyles from './styles';
 import genreIcons from '../../assets/genres';
 import { selectGenreOrCategory } from '../../Features/currentGenreOrCategory';
+import MovieList from '../MovieList/MovieList';
 
 const MovieInformation = () => {
   const classes = useStyles();
@@ -16,9 +17,10 @@ const MovieInformation = () => {
   const { data, isFetching, error } = useGetMovieQuery(id);
   const dispatch = useDispatch();
 
+  const { data: recommendations, isFetching: isRecommendationsFetching } = useGetRecommendationsQuery({ list: '/recommendations', movie_id: id });
+
   const isMovieFavorited = false;
   const isMovieWatchListed = false;
-
 
   if (isFetching) {
     return (
@@ -35,6 +37,7 @@ const MovieInformation = () => {
   const addToWatchList = () => {
 
   };
+
 
   return (
     <Grid container className={classes.containerSpaceAround}>
@@ -117,6 +120,16 @@ const MovieInformation = () => {
           </div>
         </Grid>
       </Grid>
+      <Box marginTop="5rem" width="100%">
+        <Typography variant='h3' gutterBottom align='center'>
+          You might also like
+        </Typography>
+        {/* Loop Through the recommened Movies.. */}
+        {recommendations
+          ? <MovieList movies={recommendations} numberOfMovies={12} />
+          : <Box>Sorry, nothing was Found.</Box>
+        }
+      </Box>
     </Grid>
   )
 }

@@ -20,7 +20,7 @@ export const tmdbAPI = createApi({
         getMovies: builder.query({
             query: ({ genreIdOrCategoryName, page, searchQuery }) => {
                 // Get movies by Search
-                if(searchQuery){
+                if (searchQuery) {
                     return `/search/movie?query=${searchQuery}&page=${page}&api_key=6187eefe4e7289d3efa98940cc920de6`
                 }
 
@@ -40,7 +40,12 @@ export const tmdbAPI = createApi({
         // Get Movie 
         getMovie: builder.query({
             query: (id) => `/movie/${id}?append_to_response=videos,credits&api_key=6187eefe4e7289d3efa98940cc920de6`
-        })
+        }),
+
+        // Get User Specific List
+        getRecommendations: builder.query({
+            query: ({ movie_id, list }) => `/movie/${movie_id}/${list}?api_key=6187eefe4e7289d3efa98940cc920de6`
+        }),
     }),
 });
 
@@ -48,4 +53,5 @@ export const {
     useGetMoviesQuery,
     useGetGenresQuery,
     useGetMovieQuery,
+    useGetRecommendationsQuery,
 } = tmdbAPI;
