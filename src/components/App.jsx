@@ -17,23 +17,23 @@ const App = () => {
       <CssBaseline />
       <Navbar />
       <main className={classes.content}>
-        <div className={classes.toolbar}/>
+        <div className={classes.toolbar} />
         <Switch>
-          <Route exact path="/">
-            <h1><Movies /></h1>
+          <Route exact path={["/", "/approved"]}>
+            <Movies />
           </Route>
           <Route exact path="/movie/:id">
-            <h1><MovieInformation /></h1>
+            <MovieInformation />
           </Route>
           <Route exact path="/actors/:id">
-            <h1><Actors /></h1>
+            <Actors />
           </Route>
           <Route exact path="/profile/:id">
-            <h1><Profile /></h1>
+            <Profile />
           </Route>
         </Switch>
       </main>
-    </div>
+    </div >
   );
 };
 

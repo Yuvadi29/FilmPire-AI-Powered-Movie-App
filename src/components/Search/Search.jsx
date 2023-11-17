@@ -12,15 +12,18 @@ const Search = () => {
     const classes = useStyles();
     const [query, setQuery] = useState("");
     const dispatch = useDispatch();
+    const location = useLocation();
 
     const handleKeyPress = (e) => {
         // If i press enter , it will do this
-        if(e.key === 'Enter'){
+        if (e.key === 'Enter') {
             // console.log(query);
             dispatch(searchMovie(query));
         }
     }
 
+    if (location.pathname !== '/') return null;
+    
     return (
         <div className={classes.searchContainer}>
             <TextField
