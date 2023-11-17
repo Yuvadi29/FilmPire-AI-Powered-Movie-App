@@ -6,12 +6,14 @@ import { useHistory, useParams } from 'react-router-dom';
 import { useGetActorDetailsQuery, useGetMoviesByActorIdQuery } from '../../services/TMDB';
 import useStyles from './styles';
 import MovieList from '../MovieList/MovieList';
+import Pagination from '../Pagination/Pagination';
 
 const Actors = () => {
   const { id } = useParams();
   const history = useHistory();
   const classes = useStyles();
-  const page = 1;
+  const [page, setPage] = useState(1);
+  
 
   const { data, isFetching, error } = useGetActorDetailsQuery(id);
   const { data: movies } = useGetMoviesByActorIdQuery({ id, page });
@@ -68,6 +70,7 @@ const Actors = () => {
       <Box margin="2rem 0">
         <Typography variant='h2' gutterBottom align='center'>Movies</Typography>
         {movies && <MovieList movies={movies} numberOfMovies={12} />}
+        <Pagination currentPage={page} setPage={setPage} totalPages={movies?.total_pages} />
       </Box>
     </>
   )
