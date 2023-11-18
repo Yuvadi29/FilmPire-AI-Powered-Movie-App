@@ -55,7 +55,12 @@ export const tmdbAPI = createApi({
         // Get Actor Movies
         getMoviesByActorId: builder.query({
             query: ({ id, page }) => `/discover/movie?with_cast=${id}&page=${page}&api_key=6187eefe4e7289d3efa98940cc920de6`
-        })
+        }),
+
+        // Get user Specefic list
+        getList: builder.query({
+            query: ({ listName, accountId, sessionId, page }) => `/account/${accountId}/${listName}?api_key=6187eefe4e7289d3efa98940cc920de6&session_id=${sessionId}&page=${page}`
+        }),
     }),
 });
 
@@ -66,4 +71,5 @@ export const {
     useGetRecommendationsQuery,
     useGetActorDetailsQuery,
     useGetMoviesByActorIdQuery,
+    useGetListQuery,
 } = tmdbAPI;
