@@ -11,6 +11,9 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser, userSelector } from '../../Features/auth';
 
+import { ColorModeContext } from '../../utils/ToggleColorMode';
+import { useContext } from 'react';
+
 const Navbar = () => {
 
     const { isAuthenticated, user } = useSelector(userSelector);
@@ -21,6 +24,8 @@ const Navbar = () => {
     const token = localStorage.getItem('request_token');
     const sessionIdFromLocalStorage = localStorage.getItem('sessionId');
     const dispatch = useDispatch();
+
+    const colorMode = useContext(ColorModeContext);
 
     useEffect(() => {
         const logInUser = async () => {
@@ -59,7 +64,7 @@ const Navbar = () => {
                             <MenuBook />
                         </IconButton>
                     )}
-                    <IconButton color='inherit' sx={{ ml: 1 }} onClick={() => { }}>
+                    <IconButton color='inherit' sx={{ ml: 1 }} onClick={colorMode.toggleColorMode}>
                         {theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
                     </IconButton>
                     {!isMobile && <Search />}
