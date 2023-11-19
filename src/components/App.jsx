@@ -7,10 +7,16 @@ import Actors from './Actors/Actors';
 import Profile from './Profile/Profile';
 import Navbar from './Navbar/Navbar';
 import useStyles from './styles';
+import useAlanAI from './Alan';
+import { useRef } from 'react';
 
 const App = () => {
 
   const classes = useStyles();
+  const alanBtnContainer = useRef();
+
+  useAlanAI();
+
 
   return (
     <div className={classes.root}>
@@ -33,6 +39,7 @@ const App = () => {
           </Route>
         </Switch>
       </main>
+      <div ref={alanBtnContainer} />
     </div >
   );
 };
