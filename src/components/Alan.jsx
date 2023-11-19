@@ -3,6 +3,7 @@ import alanBtn from '@alan-ai/alan-sdk-web';
 import { useEffect } from 'react';
 import { ColorModeContext } from '../utils/ToggleColorMode';
 import { useContext } from 'react';
+import { fetchToken } from '../utils';
 
 const useAlanAI = () => {
     const { setMode } = useContext(ColorModeContext);
@@ -17,6 +18,11 @@ const useAlanAI = () => {
                     } else {
                         setMode('dark');
                     }
+                } else if (command === 'login') {
+                    fetchToken();
+                } else if (command === 'logout') {
+                    localStorage.clear();
+                    window.location.href = '/';
                 }
             }
         });
